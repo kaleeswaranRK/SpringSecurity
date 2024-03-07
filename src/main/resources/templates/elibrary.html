@@ -1,55 +1,126 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>E-Library</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
+	<meta charset="UTF-8">
+	<title>E-Library</title>
+	<style>
+		.input-container {
+            position: relative;
         }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+
+        .error-message {
+    		color: red;
+    		display: none;
+    		font-size: 14px;
+    		font-family: Arial, sans-serif;
+   		 	padding-top: 5px;
+		}
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		th,
+		td {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+	</style>
+	<script>
+		function calculatePrice(quantityInput) {
+			var bookCount = parseInt(quantityInput.getAttribute('data-book-count'));
+			var bookPrice = parseFloat(quantityInput.getAttribute('data-book-price'));
+			var quantity = parseInt(quantityInput.value);
+    		var errorMessage = quantityInput.parentElement.querySelector('.error-message');
+
+			if (!isNaN(quantity) && quantity > 0) {
+				if (quantity <= bookCount) {
+					var totalPrice = quantity * bookPrice;
+
+					var totalPriceCell = quantityInput.parentElement.parentElement.nextElementSibling;
+
+					if (totalPriceCell) {
+						totalPriceCell.textContent = totalPrice.toFixed(2);
+					} else {
+						console.error('Total Price Cell not found.');
+					}
+
+					errorMessage.style.display = 'none';
+				} else {
+					// Reset the total price value to empty or zero
+					var totalPriceCell = quantityInput.parentElement.parentElement.nextElementSibling;
+					if (totalPriceCell) {
+						totalPriceCell.textContent = ''; // Set to empty string
+					}
+					quantityInput.value = '';
+					 errorMessage.textContent = 'Exceeds available book count!';
+            errorMessage.style.display = 'block';
+				}
+			} else {
+				var totalPriceCell = quantityInput.parentElement.parentElement.nextElementSibling;
+				if (totalPriceCell) {
+					totalPriceCell.textContent = ''; // Set to empty string
+				}
+				quantityInput.value = '';
+
+			 errorMessage.textContent = 'Please enter a valid quantity!';
+            errorMessage.style.display = 'block';
+			}
+		}
+
+	</script>
+
+
 </head>
+
 <body>
-    <h2>E-Library</h2>
-    
-    <!-- Book Search Form -->
-    <form th:action="@{/search}" method="get">
-        <label for="searchQuery">Search Books:</label>
-        <input type="text" id="searchQuery" name="query"/>
-        <button type="submit">Search</button>
-    </form>
-    
-    <!-- Display Search Results -->
-    <div th:if="${books}">
-        <h3>Search Results:</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="book : ${books}">
-                    <td th:text="${book.title}"></td>
-                    <td th:text="${book.author}"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        Total Books: <span th:text="${books.size()}"></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+	<h2>E-Library</h2>
+
+	<!-- Book Search Form -->
+	<form th:action="@{/search}" method="get">
+		<label for="searchQuery">Search Books:</label>
+		<input type="text" id="searchQuery" name="query" />
+		<button type="submit">Search</button>
+	</form>
+
+	<!-- Display Search Results -->
+	<div th:if="${books}">
+		<h3>Search Results:</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Author</th>
+					<th>Book Count</th>
+					<th>Price</th>
+					<th>Quantity</th>
+					<th>Total Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="book : ${books}">
+					<td th:text="${book.title}"></td>
+					<td th:text="${book.author}"></td>
+					<td th:text="${book.bookCount}"></td>
+					<td th:text="${book.bookPrice}"></td>
+					<td>
+						<div class="input-container">
+						<input type="number" name="quantity" min="1"
+							th:attr="data-book-count=${book.bookCount},data-book-price=${book.bookPrice}"
+							onchange="calculatePrice(this)">
+						<p class="error-message" style="color: red; display: none;"></p></div>
+					</td>
+					<td></td> <!-- Placeholder for Total Price -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
+
 </html>

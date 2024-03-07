@@ -1,21 +1,24 @@
 package com.springsec.model;
 
 public class Book {
-	private String title;
-	private String author;
-	private int bookCount;
+    private String title;
+    private String author;
+    private int bookCount;
+    private double bookPrice; // Added bookPrice property
 
-	public int getBookCount() {
-		return bookCount;
+    public Book(String title, String author, int bookCount, double bookPrice) {
+        this.title = title;
+        this.author = author;
+        this.bookCount = bookCount;
+        this.bookPrice = bookPrice;
+    }
+
+	public String getTitle() {
+		return title;
 	}
 
-	public void setBookCount(int bookCount) {
-		this.bookCount = bookCount;
-	}
-
-	public Book(String title, String author) {
-		this.setTitle(title);
-		this.setAuthor(author);
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getAuthor() {
@@ -26,13 +29,21 @@ public class Book {
 		this.author = author;
 	}
 
-	public String getTitle() {
-		return title;
+	public int getBookCount() {
+		return bookCount;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setBookCount(int bookCount) {
+		this.bookCount = bookCount;
 	}
 
-	// Getters and setters
+	public double getBookPrice() {
+		return bookPrice;
+	}
+
+	public void setBookPrice(double bookPrice) {
+		this.bookPrice = bookPrice;
+	}
+
+    // Getters and setters for title, author, bookCount, and bookPrice
 }

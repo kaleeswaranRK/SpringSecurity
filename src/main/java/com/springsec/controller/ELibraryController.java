@@ -13,10 +13,6 @@ import java.util.List;
 @Controller
 public class ELibraryController {
 
-	// Mock data for demonstration purposes
-	private List<Book> books = List.of(new Book("Book 1", "Author 1"), new Book("Book 2", "Author 2"),
-			new Book("Book 3", "Author 3"));
-
 	@GetMapping("/elibrary")
 	public String showELibraryPage() {
 		return "elibrary";
@@ -40,11 +36,12 @@ public class ELibraryController {
 		// For demonstration purposes, return a static list of books
 		List<Book> books = new ArrayList<Book>();
 
-		books.add(new Book("To Kill a Mockingbird", "Harper Lee"));
-		books.add(new Book("1984", "George Orwell"));
-		books.add(new Book("The Great Gatsby", "F. Scott Fitzgerald"));
-		books.add(new Book("Pride and Prejudice", "Jane Austen"));
-		books.add(new Book("The Catcher in the Rye", "J.D. Salinger"));
+		books.add(new Book("To Kill a Mockingbird", "Harper Lee", 10, 15.99)); // Assuming the price for this book is 15.99
+		books.add(new Book("1984", "George Orwell", 20, 12.50)); // Assuming the price for this book is 12.50
+		books.add(new Book("The Great Gatsby", "F. Scott Fitzgerald", 30, 18.75)); // Assuming the price for this book is 18.75
+		books.add(new Book("Pride and Prejudice", "Jane Austen", 40, 10.25)); // Assuming the price for this book is 10.25
+		books.add(new Book("The Catcher in the Rye", "J.D. Salinger", 50, 14.99)); // Assuming the price for this book is 14.99
+
 		return books;
 	}
 
